@@ -186,6 +186,12 @@ namespace Kuriimu2.EtoForms.Forms
 
             LightThemeCommand.Executed += (sender, args) => Themer.Instance.ChangeTheme("light");
             DarkThemeCommand.Executed += (sender, args) => Themer.Instance.ChangeTheme("dark");
+            var i = 0;
+            foreach (var theme in Themer.Instance.themes)
+            {
+                themeCommands[i].Executed += (sender, args) => Themer.Instance.ChangeTheme(theme.Key);
+                i++;
+            }
 
             #endregion
         }

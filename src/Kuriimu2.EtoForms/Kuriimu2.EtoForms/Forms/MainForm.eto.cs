@@ -84,6 +84,7 @@ namespace Kuriimu2.EtoForms.Forms
         #endregion
 
         #region Theme Commands
+        private Command[] themeCommands;
         private Command DarkThemeCommand;
         private Command LightThemeCommand;
         #endregion
@@ -136,8 +137,16 @@ namespace Kuriimu2.EtoForms.Forms
 
             #endregion
 
+
             #region Theme Commands
 
+            themeCommands = new Command[Themer.Instance.themes.Count];
+            var i = 0;
+            foreach (var theme in Themer.Instance.themes)
+            {
+                themeCommands[i] = new Command{ MenuText = theme.Key};
+                i++;
+            }
             LightThemeCommand = new Command { MenuText = Localize(ThemeLightKey_)};
             DarkThemeCommand = new Command { MenuText = Localize(ThemeDarkKey_)};
 
@@ -149,6 +158,12 @@ namespace Kuriimu2.EtoForms.Forms
             Icon = Icon.FromResource("Kuriimu2.EtoForms.Images.Misc.kuriimu2.ico");
 
             #region Menu
+
+            var themeMenuButton = new ButtonMenuItem
+            {
+                Text = Localize(ChangeThemeKey_),
+            };
+            themeMenuButton.Items.AddRange(themeCommands);
 
             Menu = new MenuBar
             {
@@ -214,15 +229,7 @@ namespace Kuriimu2.EtoForms.Forms
                                     simpleChineseCommand
                                 }
                             },
-                            new ButtonMenuItem
-                            {
-                                Text = Localize(ChangeThemeKey_),
-                                Items =
-                                {
-                                    LightThemeCommand,
-                                    DarkThemeCommand
-                                }
-                            }
+                            themeMenuButton,
                         } 
                     }
                 },

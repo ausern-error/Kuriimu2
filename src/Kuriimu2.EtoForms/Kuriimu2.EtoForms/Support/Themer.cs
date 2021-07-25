@@ -1,8 +1,10 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 using Kuriimu2.EtoForms.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Kuriimu2.EtoForms.Support
 {
@@ -24,7 +26,7 @@ namespace Kuriimu2.EtoForms.Support
 
         #endregion
 
-        private readonly Dictionary<string, Theme> _themes = new Dictionary<string, Theme>();
+        public readonly Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
 
         private string _currentThemeKey;
         private bool _firstLoad = true;
@@ -34,12 +36,11 @@ namespace Kuriimu2.EtoForms.Support
             if (_firstLoad)
             {
                 _currentThemeKey = Settings.Default.Theme;
-
                 #region Themes
 
                 #region Light theme
 
-                _themes.Add("light", new Theme(
+                themes.Add("light", new Theme(name:"light",
                 mainColor: KnownColors.ThemeLight, altColor: KnownColors.Black, loggerBackColor: KnownColors.Black,
                 loggerTextColor: KnownColors.NeonGreen, logFatalColor: KnownColors.DarkRed, logInfoColor: KnownColors.NeonGreen,
                 logErrorColor: KnownColors.Red, logWarningColor: KnownColors.Orange, logDefaultColor: KnownColors.Wheat, hexByteBack1Color: Color.FromArgb(0xf0, 0xfd, 0xff),
@@ -51,23 +52,10 @@ namespace Kuriimu2.EtoForms.Support
 
                 #endregion
 
-                #region Dark themes
-
-                _themes.Add("dark", new Theme(
-                mainColor: KnownColors.ThemeDark, altColor: KnownColors.White, loggerBackColor: Color.FromArgb(90, 90, 90),
-                loggerTextColor: KnownColors.NeonGreen, logFatalColor: KnownColors.DarkRed, logInfoColor: KnownColors.NeonGreen,
-                logErrorColor: KnownColors.Red, logWarningColor: KnownColors.Orange, logDefaultColor: KnownColors.Wheat, hexByteBack1Color: KnownColors.DarkRed,
-                hexSidebarBackColor: KnownColors.DarkRed, controlColor: Color.FromArgb(100, 100, 100), menuBarBackColor: Color.FromArgb(40, 40, 40),
-                unselectedTabBackColor: Color.FromArgb(40, 40, 40), windowBackColor: Color.FromArgb(20, 20, 20), archiveChangedColor: KnownColors.Orange,
-                progressColor: KnownColors.LimeGreen, progressBorderColor: KnownColors.ControlDark, progressControlColor: KnownColors.ControlDark, buttonBackColor: KnownColors.ThemeDark,
-                buttonDisabledTextColor: Color.FromArgb(60, 60, 60), gridViewHeaderGradientColor: Color.FromArgb(12, 12, 12), gridViewHeaderBorderColor: Color.FromArgb(90, 90, 90),
-                imageViewBackColor: KnownColors.DarkGreen));
-
                 #endregion
+                LoadJson();
 
-                #endregion 
-
-                if (!_themes.ContainsKey(_currentThemeKey))
+                if (!themes.ContainsKey(_currentThemeKey))
                     _currentThemeKey = "light";
 
                 _firstLoad = false;
@@ -116,13 +104,25 @@ namespace Kuriimu2.EtoForms.Support
         }
         public Theme GetTheme()
         {
-            return _themes[_currentThemeKey];
+            return themes[_currentThemeKey];
+        }
+        private void LoadJson()
+        {
+            var themeDirs = Directory.GetFiles(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Themes");
+            foreach (var dir in themeDirs)
+            {
+                var theme = JsonConvert.DeserializeObject<Theme>(File.ReadAllText(dir));
+                if(!themes.TryAdd(theme.Name, theme)){
+                    themes.Add(theme.Name + theme.GetHashCode(), theme);
+                }
+            }
         }
     }
 }
 
 public class Theme
 {
+    public string Name { get; }
     public Color MainColor { get; }//Main background color
     public Color AltColor { get; }//text and foreground color
     public Color LoggerBackColor { get; }//Background of logger text areas
@@ -147,13 +147,14 @@ public class Theme
     public Color GridViewHeaderGradientColor { get; } //Graident END color of gridview header
     public Color GridViewHeaderBorderColor { get; } //Border of grid view header
     public Color ImageViewBackColor { get; } //Background of image viewer
-    public Theme(Color mainColor, Color altColor, Color loggerBackColor, Color loggerTextColor,
+    public Theme(string name,Color mainColor, Color altColor, Color loggerBackColor, Color loggerTextColor,
         Color logFatalColor, Color logInfoColor, Color logErrorColor, Color logWarningColor, Color logDefaultColor,
         Color hexByteBack1Color, Color hexSidebarBackColor, Color controlColor, Color menuBarBackColor,
         Color unselectedTabBackColor, Color windowBackColor, Color archiveChangedColor, Color progressColor, Color progressBorderColor,
         Color progressControlColor, Color buttonDisabledTextColor, Color buttonBackColor, Color gridViewHeaderGradientColor, Color gridViewHeaderBorderColor,
         Color imageViewBackColor)
     {
+        Name = name;
         MainColor = mainColor;
         AltColor = altColor;
         LoggerBackColor = loggerBackColor;
