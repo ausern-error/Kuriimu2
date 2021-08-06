@@ -22,6 +22,8 @@
     <EmbeddedResource Include="Resources\Localizations\ru.json" />
     <EmbeddedResource Include="Resources\Localizations\zh.json" />
     <EmbeddedResource Include="Resources\version.json" />
+	<EmbeddedResource Include="Resources\Themes\Light.json" />
+	<EmbeddedResource Include="Resources\Themes\Dark.json" />
 	<EmbeddedResource Include="Images\**\*.png" />
 	<EmbeddedResource Include="Images\**\*.ico" />
   </ItemGroup>
@@ -67,6 +69,6 @@
     </None>
   </ItemGroup>
   
-  <ProjectExtensions><VisualStudio><UserProperties resources_4localizations_4en_1json__JsonSchema="https://beaujs.com/schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties resources_4localizations_4en_1json__JsonSchema="https://beaujs.com/schema.json" resources_4themes_4light_1json__JsonSchema="https://beaujs.com/schema.json" /></VisualStudio></ProjectExtensions>
   
 </Project>
