@@ -109,9 +109,22 @@ namespace Kuriimu2.EtoForms.Support
             var themeDirs = Directory.GetFiles(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Themes");
             foreach (var dir in themeDirs)
             {
-                var theme = JsonConvert.DeserializeObject<Theme>(File.ReadAllText(dir));
-                if(!themes.TryAdd(theme.Name, theme)){
-                    themes.Add(theme.Name + theme.GetHashCode(), theme);
+                Theme theme;
+                try
+                {
+                    theme = JsonConvert.DeserializeObject<Theme>(File.ReadAllText(dir));
+                }
+                catch (JsonReaderException)
+                {
+                    continue;
+                }
+                catch (JsonSerializationException)
+                {
+                    continue;
+                }
+                if(theme != null)   
+                {
+                    themes.TryAdd(theme.Name, theme);
                 }
             }
         }
@@ -145,6 +158,7 @@ public class Theme
     public Color GridViewHeaderBorderColor { get; } //Border of grid view header
     public Color ImageViewBackColor { get; } //Background of image viewer
     public Color InactiveTreeGridSelectionColor { get; } //Background of image viewer
+
     public Theme(string name,Color mainColor, Color altColor, Color loggerBackColor, Color loggerTextColor,
         Color logFatalColor, Color logInfoColor, Color logErrorColor, Color logWarningColor, Color logDefaultColor,
         Color hexByteBack1Color, Color hexSidebarBackColor, Color controlColor, Color menuBarBackColor,
