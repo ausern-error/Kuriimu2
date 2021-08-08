@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace Kuriimu2.EtoForms.Support
 {
@@ -26,6 +27,13 @@ namespace Kuriimu2.EtoForms.Support
 
         #endregion
 
+        #region Theme Constants
+
+        private const string lightThemeLocation = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
+        private const string darkThemeLocation = "Kuriimu2.EtoForms.Resources.Themes.Dark.json";
+
+        #endregion
+
         public readonly Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
 
         private string _currentThemeKey;
@@ -39,7 +47,7 @@ namespace Kuriimu2.EtoForms.Support
                 #region Themes
 
                 #region Light theme
-
+                /*
                 themes.Add("light", new Theme(name:"light",
                 mainColor: KnownColors.ThemeLight, altColor: KnownColors.Black, loggerBackColor: KnownColors.Black,
                 loggerTextColor: KnownColors.NeonGreen, logFatalColor: KnownColors.DarkRed, logInfoColor: KnownColors.NeonGreen,
@@ -49,14 +57,14 @@ namespace Kuriimu2.EtoForms.Support
                 progressColor: KnownColors.LimeGreen, progressBorderColor: KnownColors.ControlDark, progressControlColor: KnownColors.Control, buttonBackColor: Color.FromArgb(221, 221, 221),
                 buttonDisabledTextColor: KnownColors.Black, gridViewHeaderGradientColor: Color.FromArgb(243, 243, 243), gridViewHeaderBorderColor: Color.FromArgb(213, 213, 213),
                 imageViewBackColor: KnownColors.DarkGreen,inactiveTreeGridSelectionColor:Color.FromArgb(240, 240, 240)));
-
+                */
                 #endregion
 
                 #endregion
                 LoadJson();
 
                 if (!themes.ContainsKey(_currentThemeKey))
-                    _currentThemeKey = "light";
+                    _currentThemeKey = "Light";
 
                 _firstLoad = false;
             }
@@ -107,12 +115,19 @@ namespace Kuriimu2.EtoForms.Support
         private void LoadJson()
         {
             var themeDirs = Directory.GetFiles(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Themes");
+            var files = new List<string>();
+            files.Add(LoadEmbeddedFile(lightThemeLocation));
+            files.Add(LoadEmbeddedFile(darkThemeLocation));
             foreach (var dir in themeDirs)
+            {
+                files.Add(File.ReadAllText(dir));
+            }
+            foreach (var file in files)
             {
                 Theme theme;
                 try
                 {
-                    theme = JsonConvert.DeserializeObject<Theme>(File.ReadAllText(dir));
+                    theme = JsonConvert.DeserializeObject<Theme>(file);
                 }
                 catch (JsonReaderException)
                 {
@@ -122,9 +137,21 @@ namespace Kuriimu2.EtoForms.Support
                 {
                     continue;
                 }
+                
+                theme = JsonConvert.DeserializeObject<Theme>(file);
                 if(theme != null)   
                 {
                     themes.TryAdd(theme.Name, theme);
+                }
+            }
+        }
+        private string LoadEmbeddedFile(string path)
+        {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path))
+            {
+                using(var reader = new StreamReader(stream, System.Text.Encoding.UTF8))
+                {
+                    return reader.ReadToEnd();
                 }
             }
         }

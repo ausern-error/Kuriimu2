@@ -22,6 +22,7 @@
   "GridViewHeaderGradientColor": "#0c0c0c",
   "GridViewHeaderBorderColor": "#5a5a5a",
   "ButtonDisabledTextColor": "#3c3c3c",
+  "ButtonDisabledTextColor": "#1e1e1e",
   "ImageViewBackColor": "#006400",
   "InactiveTreeGridSelectionColor": "#646464"
 }
