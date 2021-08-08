@@ -34,6 +34,15 @@ namespace Kompression.Configuration
         private UnitSize _unitSize = UnitSize.Byte;
         private int _taskCount = Environment.ProcessorCount;
 
+        #region ParseWith method declarations
+
+        public IInternalMatchOptions ParseOptimal()
+        {
+            return ParseMatchesWith(DefaultMatchParser);
+        }
+
+        #endregion
+
         #region FindWith method declarations
 
         /// <inheritdoc cref="FindWith"/>
@@ -117,7 +126,7 @@ namespace Kompression.Configuration
         #region General
 
         /// <inheritdoc cref="ParseMatchesWith"/>
-        public IMatchOptions ParseMatchesWith(Func<FindOptions, IPriceCalculator, IMatchFinder[], IMatchParser> matchParserFactory)
+        public IInternalMatchOptions ParseMatchesWith(Func<FindOptions, IPriceCalculator, IMatchFinder[], IMatchParser> matchParserFactory)
         {
 	        ContractAssertions.IsNotNull(matchParserFactory, nameof(matchParserFactory));
 
