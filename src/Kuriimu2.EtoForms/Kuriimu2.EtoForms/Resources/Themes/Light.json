@@ -22,5 +22,6 @@
   "buttonDisabledTextColor": "Black",
   "gridViewHeaderGradientColor": "243,243,243",
   "gridViewHeaderBorderColor": "213,213,213",
-  "imageViewBackColor": "0x00,0x64,0x00"
+  "imageViewBackColor": "0x00,0x64,0x00",
+  "InactiveTreeGridSelectionColor": "240,240,240"
 }

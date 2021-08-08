@@ -48,7 +48,7 @@ namespace Kuriimu2.EtoForms.Support
                 unselectedTabBackColor: Color.FromArgb(238, 238, 238), windowBackColor: Color.FromArgb(240, 240, 240), archiveChangedColor: KnownColors.Orange,
                 progressColor: KnownColors.LimeGreen, progressBorderColor: KnownColors.ControlDark, progressControlColor: KnownColors.Control, buttonBackColor: Color.FromArgb(221, 221, 221),
                 buttonDisabledTextColor: KnownColors.Black, gridViewHeaderGradientColor: Color.FromArgb(243, 243, 243), gridViewHeaderBorderColor: Color.FromArgb(213, 213, 213),
-                imageViewBackColor: KnownColors.DarkGreen));
+                imageViewBackColor: KnownColors.DarkGreen,inactiveTreeGridSelectionColor:Color.FromArgb(240, 240, 240)));
 
                 #endregion
 
@@ -64,25 +64,23 @@ namespace Kuriimu2.EtoForms.Support
             {
                 #region Styling
 
-                var theme = GetTheme();
-
                 Eto.Style.Add<Label>(null, text =>
                 {
-                    text.TextColor = theme.AltColor;
+                    text.TextColor = GetTheme().AltColor;
                 });
                 Eto.Style.Add<Dialog>(null, dialog =>
                 {
-                    dialog.BackgroundColor = theme.MainColor;
+                    dialog.BackgroundColor = GetTheme().MainColor;
                 });
                 Eto.Style.Add<CheckBox>(null, checkbox =>
                 {
-                    checkbox.BackgroundColor = theme.MainColor;
-                    checkbox.TextColor = theme.AltColor;
+                    checkbox.BackgroundColor = GetTheme().MainColor;
+                    checkbox.TextColor = GetTheme().AltColor;
                 });
                 Eto.Style.Add<GroupBox>(null, groupBox =>
                 {
-                    groupBox.BackgroundColor = theme.MainColor;
-                    groupBox.TextColor = theme.AltColor;
+                    groupBox.BackgroundColor = GetTheme().MainColor;
+                    groupBox.TextColor = GetTheme().AltColor;
                 });
 
                 #endregion
@@ -119,7 +117,6 @@ namespace Kuriimu2.EtoForms.Support
         }
     }
 }
-
 public class Theme
 {
     public string Name { get; }
@@ -147,12 +144,13 @@ public class Theme
     public Color GridViewHeaderGradientColor { get; } //Graident END color of gridview header
     public Color GridViewHeaderBorderColor { get; } //Border of grid view header
     public Color ImageViewBackColor { get; } //Background of image viewer
+    public Color InactiveTreeGridSelectionColor { get; } //Background of image viewer
     public Theme(string name,Color mainColor, Color altColor, Color loggerBackColor, Color loggerTextColor,
         Color logFatalColor, Color logInfoColor, Color logErrorColor, Color logWarningColor, Color logDefaultColor,
         Color hexByteBack1Color, Color hexSidebarBackColor, Color controlColor, Color menuBarBackColor,
         Color unselectedTabBackColor, Color windowBackColor, Color archiveChangedColor, Color progressColor, Color progressBorderColor,
         Color progressControlColor, Color buttonDisabledTextColor, Color buttonBackColor, Color gridViewHeaderGradientColor, Color gridViewHeaderBorderColor,
-        Color imageViewBackColor)
+        Color imageViewBackColor,Color inactiveTreeGridSelectionColor)
     {
         Name = name;
         MainColor = mainColor;
@@ -179,5 +177,6 @@ public class Theme
         GridViewHeaderGradientColor = gridViewHeaderGradientColor;
         GridViewHeaderBorderColor = gridViewHeaderBorderColor;
         ImageViewBackColor = imageViewBackColor;
+        InactiveTreeGridSelectionColor = inactiveTreeGridSelectionColor;
     }
 }

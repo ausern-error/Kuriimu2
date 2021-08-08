@@ -44,13 +44,6 @@ namespace Kuriimu2.EtoForms.Forms.Formats
 
         #endregion
 
-        #region Constants
-
-        private static readonly Color ColorDefaultState = Themer.Instance.GetTheme().AltColor;
-        private static readonly Color ColorChangedState = Themer.Instance.GetTheme().ArchiveChangedColor;
-
-        #endregion
-
         #region Localization Keys
 
         private const string FileNotSuccessfullyLoadedKey_ = "FileNotSuccessfullyLoaded";
@@ -379,7 +372,7 @@ namespace Kuriimu2.EtoForms.Forms.Formats
 
             var gridItem = (TreeGridItem)e.Item;
             var path = GetAbsolutePath(gridItem);
-            e.ForegroundColor = _changedDirectories.Contains(path) ? ColorChangedState : ColorDefaultState;
+            e.ForegroundColor = _changedDirectories.Contains(path) ? Themer.Instance.GetTheme().ArchiveChangedColor : e.ForegroundColor;
         }
 
         #endregion
@@ -406,7 +399,7 @@ namespace Kuriimu2.EtoForms.Forms.Formats
 
             var element = (FileElement)e.Item;
             var isChanged = element.ArchiveFileInfo.ContentChanged || _formInfo.FileState.ArchiveChildren.Where(x => x.StateChanged).Any(x => x.FilePath == element.ArchiveFileInfo.FilePath);
-            e.ForegroundColor = isChanged ? ColorChangedState : ColorDefaultState;
+            e.ForegroundColor = isChanged ? Themer.Instance.GetTheme().ArchiveChangedColor : e.ForegroundColor;
         }
 
         private void fileView_ColumnHeaderClick(object sender, GridColumnEventArgs e)

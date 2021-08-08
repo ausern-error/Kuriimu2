@@ -50,6 +50,8 @@ namespace Kuriimu2.EtoForms.Wpf
                 handler.Control.Foreground = foregroundColor;
                 handler.Control.Background = backgroundColor;
                 handler.Control.RowBackground = backgroundColor;
+                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightBrushKey, new System.Windows.Media.SolidColorBrush(ConvertEtoColor(Support.Themer.Instance.GetTheme().InactiveTreeGridSelectionColor)));
+                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightTextBrushKey,backgroundColor);
                 handler.Control.ColumnHeaderHeight = 0;
             });
             Eto.Style.Add<Eto.Wpf.Forms.Controls.TextBoxHandler>(null, handler =>
@@ -101,7 +103,8 @@ namespace Kuriimu2.EtoForms.Wpf
                 handler.Control.Background = new System.Windows.Media.SolidColorBrush(ConvertEtoColor(Support.Themer.Instance.GetTheme().UnselectedTabBackColor));
                 var style = new Style(typeof(TabItem));
                 var setter = new Setter() { Property = TabItem.ForegroundProperty, Value = foregroundColor };
-                var triggerSelected = new Trigger() { Property = TabItem.IsSelectedProperty, Value = false }; triggerSelected.Setters.Add(setter);
+                var triggerSelected = new Trigger() { Property = TabItem.IsSelectedProperty, Value = false }; 
+                triggerSelected.Setters.Add(setter);
                 style.Triggers.Add(triggerSelected);
                 handler.Control.Style = style;
             });

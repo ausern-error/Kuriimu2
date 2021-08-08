@@ -1,6 +1,6 @@
 ﻿{
   "Name": "Dark",
-  "MainColor": "#000000",
+  "MainColor": "#1e1e1e",
   "AltColor": "#FFFFFF",
   "LoggerBackColor": "#5a5a5a",
   "LoggerTextColor": "#20c20e",
@@ -22,5 +22,6 @@
   "GridViewHeaderGradientColor": "#0c0c0c",
   "GridViewHeaderBorderColor": "#5a5a5a",
   "ButtonDisabledTextColor": "#3c3c3c",
-  "ImageViewBackColor": "#006400"
+  "ImageViewBackColor": "#006400",
+  "InactiveTreeGridSelectionColor": "#646464"
 }
