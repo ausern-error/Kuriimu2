@@ -6,6 +6,19 @@ namespace Kontract.Kompression.Configuration
     public interface IInternalMatchOptions : IMatchOptions
     {
         /// <summary>
+        /// Sets the factory to create an instance of <see cref="IMatchParser"/>.
+        /// </summary>
+        /// <param name="matchParserFactory">The factory to create an instance of <see cref="IMatchParser"/>.</param>
+        /// <returns>The option object.</returns>
+        IInternalMatchOptions ParseMatchesWith(Func<FindOptions, IPriceCalculator, IMatchFinder[], IMatchParser> matchParserFactory);
+
+        /// <summary>
+        /// Sets a default parser to parse matches via "Optimal Parsing".
+        /// </summary>
+        /// <returns>The option object.</returns>
+        IInternalMatchOptions ParseOptimal();
+
+        /// <summary>
         /// Add a match finder.
         /// </summary>
         /// <param name="matchFinderFactory">The factory to create an <see cref="IMatchFinder"/>.</param>
