@@ -29,8 +29,8 @@ namespace Kuriimu2.EtoForms.Support
 
         #region Theme Constants
 
-        private const string lightThemeLocation = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
-        private const string darkThemeLocation = "Kuriimu2.EtoForms.Resources.Themes.Dark.json";
+        private const string lightThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
+        private const string darkThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Dark.json";
 
         #endregion
 
@@ -44,23 +44,7 @@ namespace Kuriimu2.EtoForms.Support
             if (_firstLoad)
             {
                 _currentThemeKey = Settings.Default.Theme;
-                #region Themes
 
-                #region Light theme
-                /*
-                themes.Add("light", new Theme(name:"light",
-                mainColor: KnownColors.ThemeLight, altColor: KnownColors.Black, loggerBackColor: KnownColors.Black,
-                loggerTextColor: KnownColors.NeonGreen, logFatalColor: KnownColors.DarkRed, logInfoColor: KnownColors.NeonGreen,
-                logErrorColor: KnownColors.Red, logWarningColor: KnownColors.Orange, logDefaultColor: KnownColors.Wheat, hexByteBack1Color: Color.FromArgb(0xf0, 0xfd, 0xff),
-                hexSidebarBackColor: Color.FromArgb(0xcd, 0xf7, 0xfd), controlColor: Color.FromArgb(0xf0, 0xfd, 0xff), menuBarBackColor: Color.FromArgb(245, 245, 245),
-                unselectedTabBackColor: Color.FromArgb(238, 238, 238), windowBackColor: Color.FromArgb(240, 240, 240), archiveChangedColor: KnownColors.Orange,
-                progressColor: KnownColors.LimeGreen, progressBorderColor: KnownColors.ControlDark, progressControlColor: KnownColors.Control, buttonBackColor: Color.FromArgb(221, 221, 221),
-                buttonDisabledTextColor: KnownColors.Black, gridViewHeaderGradientColor: Color.FromArgb(243, 243, 243), gridViewHeaderBorderColor: Color.FromArgb(213, 213, 213),
-                imageViewBackColor: KnownColors.DarkGreen,inactiveTreeGridSelectionColor:Color.FromArgb(240, 240, 240)));
-                */
-                #endregion
-
-                #endregion
                 LoadJson();
 
                 if (!themes.ContainsKey(_currentThemeKey))
@@ -115,9 +99,11 @@ namespace Kuriimu2.EtoForms.Support
         private void LoadJson()
         {
             var themeDirs = Directory.GetFiles(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Themes");
-            var files = new List<string>();
-            files.Add(LoadEmbeddedFile(lightThemeLocation));
-            files.Add(LoadEmbeddedFile(darkThemeLocation));
+            var files = new List<string>
+            {
+                LoadEmbeddedFile(lightThemeLocation_),
+                LoadEmbeddedFile(darkThemeLocation_)
+            };
             foreach (var dir in themeDirs)
             {
                 files.Add(File.ReadAllText(dir));
@@ -138,7 +124,6 @@ namespace Kuriimu2.EtoForms.Support
                     continue;
                 }
                 
-                theme = JsonConvert.DeserializeObject<Theme>(file);
                 if(theme != null)   
                 {
                     themes.TryAdd(theme.Name, theme);
@@ -159,65 +144,32 @@ namespace Kuriimu2.EtoForms.Support
 }
 public class Theme
 {
-    public string Name { get; }
-    public Color MainColor { get; }//Main background color
-    public Color AltColor { get; }//text and foreground color
-    public Color LoggerBackColor { get; }//Background of logger text areas
-    public Color LoggerTextColor { get; }//Text of logger text areas
-    public Color LogFatalColor { get; }//fatal logger errors color
-    public Color LogInfoColor { get; }//Info logger text color
-    public Color LogErrorColor { get; }//Error logger text color
-    public Color LogWarningColor { get; }//warning logger text color
-    public Color LogDefaultColor { get; }//defualt logger text color
-    public Color HexByteBack1Color { get; } //every second byte in hex viewer
-    public Color HexSidebarBackColor { get; }//side bar color in hex viewer
-    public Color ControlColor { get; }
-    public Color MenuBarBackColor { get; }//Back colour of top menu bar
-    public Color UnselectedTabBackColor { get; }//Background of unselected tab
-    public Color WindowBackColor { get; } //Back of the main window, NOT the main panel
-    public Color ArchiveChangedColor { get; }//Archive viewer text color when a file is modified
-    public Color ProgressColor { get; } //Colour of the moving bar in a progress bar
-    public Color ProgressBorderColor { get; } //border color of progress bar
-    public Color ProgressControlColor { get; }//Background color of the progress bar
-    public Color ButtonBackColor { get; } //Background colour of a button
-    public Color ButtonDisabledTextColor { get; } //Text colour of a greyedout/disabledbutton
-    public Color GridViewHeaderGradientColor { get; } //Graident END color of gridview header
-    public Color GridViewHeaderBorderColor { get; } //Border of grid view header
-    public Color ImageViewBackColor { get; } //Background of image viewer
-    public Color InactiveTreeGridSelectionColor { get; } //Background of image viewer
+    public string Name { get; set; }
+    public Color MainColor { get; set; }//Main background color
+    public Color AltColor { get; set; }//text and foreground color
+    public Color LoggerBackColor { get; set; }//Background of logger text areas
+    public Color LoggerTextColor { get; set; }//Text of logger text areas
+    public Color LogFatalColor { get; set; }//fatal logger errors color
+    public Color LogInfoColor { get; set; }//Info logger text color
+    public Color LogErrorColor { get; set; }//Error logger text color
+    public Color LogWarningColor { get; set; }//warning logger text color
+    public Color LogDefaultColor { get; set; }//defualt logger text color
+    public Color HexByteBack1Color { get; set; } //every second byte in hex viewer
+    public Color HexSidebarBackColor { get; set; }//side bar color in hex viewer
+    public Color ControlColor { get; set; }
+    public Color MenuBarBackColor { get; set; }//Back colour of top menu bar
+    public Color UnselectedTabBackColor { get; set; }//Background of unselected tab
+    public Color WindowBackColor { get; set; } //Back of the main window, NOT the main panel
+    public Color ArchiveChangedColor { get; set; }//Archive viewer text color when a file is modified
+    public Color ProgressColor { get; set; } //Colour of the moving bar in a progress bar
+    public Color ProgressBorderColor { get; set; } //border color of progress bar
+    public Color ProgressControlColor { get; set; }//Background color of the progress bar
+    public Color ButtonBackColor { get; set; } //Background colour of a button
+    public Color ButtonDisabledTextColor { get; set; } //Text colour of a greyedout/disabledbutton
+    public Color GridViewHeaderGradientColor { get; set; } //Graident END color of gridview header
+    public Color GridViewHeaderBorderColor { get; set; } //Border of grid view header
+    public Color ImageViewBackColor { get; set; } //Background of image viewer
+    public Color InactiveTreeGridSelectionColor { get; set; } //Background of image viewer
 
-    public Theme(string name,Color mainColor, Color altColor, Color loggerBackColor, Color loggerTextColor,
-        Color logFatalColor, Color logInfoColor, Color logErrorColor, Color logWarningColor, Color logDefaultColor,
-        Color hexByteBack1Color, Color hexSidebarBackColor, Color controlColor, Color menuBarBackColor,
-        Color unselectedTabBackColor, Color windowBackColor, Color archiveChangedColor, Color progressColor, Color progressBorderColor,
-        Color progressControlColor, Color buttonDisabledTextColor, Color buttonBackColor, Color gridViewHeaderGradientColor, Color gridViewHeaderBorderColor,
-        Color imageViewBackColor,Color inactiveTreeGridSelectionColor)
-    {
-        Name = name;
-        MainColor = mainColor;
-        AltColor = altColor;
-        LoggerBackColor = loggerBackColor;
-        LoggerTextColor = loggerTextColor;
-        LogFatalColor = logFatalColor;
-        LogInfoColor = logInfoColor;
-        LogErrorColor = logErrorColor;
-        LogWarningColor = logWarningColor;
-        LogDefaultColor = logDefaultColor;
-        HexByteBack1Color = hexByteBack1Color;
-        HexSidebarBackColor = hexSidebarBackColor;
-        ControlColor = controlColor;
-        MenuBarBackColor = menuBarBackColor;
-        UnselectedTabBackColor = unselectedTabBackColor;
-        WindowBackColor = windowBackColor;
-        ArchiveChangedColor = archiveChangedColor;
-        ProgressColor = progressColor;
-        ProgressBorderColor = progressBorderColor;
-        ProgressControlColor = progressControlColor;
-        ButtonBackColor = buttonBackColor;
-        ButtonDisabledTextColor = buttonDisabledTextColor;
-        GridViewHeaderGradientColor = gridViewHeaderGradientColor;
-        GridViewHeaderBorderColor = gridViewHeaderBorderColor;
-        ImageViewBackColor = imageViewBackColor;
-        InactiveTreeGridSelectionColor = inactiveTreeGridSelectionColor;
-    }
+
 }
