@@ -31,6 +31,7 @@ namespace Kuriimu2.EtoForms.Support
 
         private const string lightThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
         private const string darkThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Dark.json";
+        private const string baseThemeKey_ = "Light";
 
         #endregion
 
@@ -47,7 +48,7 @@ namespace Kuriimu2.EtoForms.Support
                 LoadJson();
 
                 if (!themes.ContainsKey(_currentThemeKey))
-                    _currentThemeKey = "Light";
+                    _currentThemeKey = baseThemeKey_;
 
             }
             #region Styling
@@ -119,8 +120,16 @@ namespace Kuriimu2.EtoForms.Support
                     continue;
                 }
 
-                if (theme != null)
+                if (theme != null && theme.Name != null)// theme name cannot be omited
                 {
+                    foreach (var property in theme.GetType().GetProperties())
+                    {
+                        // theme properties can be omited, they will be set to light
+                        if (property.GetValue(theme) == null)
+                        {
+                            property.SetValue(theme, property.GetValue(themes[baseThemeKey_]));
+                        }
+                    }
                     themes.TryAdd(theme.Name, theme);
                 }
             }
