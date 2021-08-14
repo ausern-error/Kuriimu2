@@ -164,5 +164,5 @@ public class Theme
     public Color GridViewHeaderGradientColor { get; set; } //Graident END color of gridview header
     public Color GridViewHeaderBorderColor { get; set; } //Border of grid view header
     public Color ImageViewBackColor { get; set; } //Background of image viewer
-    public Color InactiveTreeGridSelectionColor { get; set; } //Background of image viewer
+    public Color InactiveGridSelectionColor { get; set; } //Background of image viewer
 }

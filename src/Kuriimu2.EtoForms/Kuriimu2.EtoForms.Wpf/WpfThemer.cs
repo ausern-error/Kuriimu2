@@ -35,6 +35,8 @@ namespace Kuriimu2.EtoForms.Wpf
                 handler.Control.Background = backgroundColor;
                 handler.Control.RowBackground = backgroundColor;
                 handler.Control.Foreground = foregroundColor;
+                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightBrushKey, new System.Windows.Media.SolidColorBrush(ConvertEtoColor(Support.Themer.Instance.GetTheme().InactiveGridSelectionColor)));
+                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightTextBrushKey, backgroundColor);
 
                 var style = new Style(typeof(System.Windows.Controls.Primitives.DataGridColumnHeader));
                 style.Setters.Add(new Setter { Property = Control.BackgroundProperty, Value = new System.Windows.Media.LinearGradientBrush(backgroundColor.Color, ConvertEtoColor(Support.Themer.Instance.GetTheme().GridViewHeaderGradientColor), new Point(0, 0), new Point(0, 1)) });
@@ -50,7 +52,7 @@ namespace Kuriimu2.EtoForms.Wpf
                 handler.Control.Foreground = foregroundColor;
                 handler.Control.Background = backgroundColor;
                 handler.Control.RowBackground = backgroundColor;
-                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightBrushKey, new System.Windows.Media.SolidColorBrush(ConvertEtoColor(Support.Themer.Instance.GetTheme().InactiveTreeGridSelectionColor)));
+                handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightBrushKey, new System.Windows.Media.SolidColorBrush(ConvertEtoColor(Support.Themer.Instance.GetTheme().InactiveGridSelectionColor)));
                 handler.Control.Resources.Add(SystemColors.InactiveSelectionHighlightTextBrushKey,backgroundColor);
                 handler.Control.ColumnHeaderHeight = 0;
             });
