@@ -37,11 +37,10 @@ namespace Kuriimu2.EtoForms.Support
         public readonly Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
 
         private string _currentThemeKey;
-        private bool _firstLoad = true;
 
         public void LoadThemes()
         {
-            if (_firstLoad)
+            if (themes.Count == 0)
             {
                 _currentThemeKey = Settings.Default.Theme;
 
@@ -50,33 +49,29 @@ namespace Kuriimu2.EtoForms.Support
                 if (!themes.ContainsKey(_currentThemeKey))
                     _currentThemeKey = "Light";
 
-                _firstLoad = false;
             }
-            else
-            {
-                #region Styling
+            #region Styling
 
-                Eto.Style.Add<Label>(null, text =>
+            Eto.Style.Add<Label>(null, text =>
                 {
                     text.TextColor = GetTheme().AltColor;
                 });
-                Eto.Style.Add<Dialog>(null, dialog =>
-                {
-                    dialog.BackgroundColor = GetTheme().MainColor;
-                });
-                Eto.Style.Add<CheckBox>(null, checkbox =>
-                {
-                    checkbox.BackgroundColor = GetTheme().MainColor;
-                    checkbox.TextColor = GetTheme().AltColor;
-                });
-                Eto.Style.Add<GroupBox>(null, groupBox =>
-                {
-                    groupBox.BackgroundColor = GetTheme().MainColor;
-                    groupBox.TextColor = GetTheme().AltColor;
-                });
+            Eto.Style.Add<Dialog>(null, dialog =>
+            {
+                dialog.BackgroundColor = GetTheme().MainColor;
+            });
+            Eto.Style.Add<CheckBox>(null, checkbox =>
+            {
+                checkbox.BackgroundColor = GetTheme().MainColor;
+                checkbox.TextColor = GetTheme().AltColor;
+            });
+            Eto.Style.Add<GroupBox>(null, groupBox =>
+            {
+                groupBox.BackgroundColor = GetTheme().MainColor;
+                groupBox.TextColor = GetTheme().AltColor;
+            });
 
-                #endregion
-            }
+            #endregion
         }
         public void ChangeTheme(string theme)
         {
@@ -123,8 +118,8 @@ namespace Kuriimu2.EtoForms.Support
                 {
                     continue;
                 }
-                
-                if(theme != null)   
+
+                if (theme != null)
                 {
                     themes.TryAdd(theme.Name, theme);
                 }
@@ -134,7 +129,7 @@ namespace Kuriimu2.EtoForms.Support
         {
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path))
             {
-                using(var reader = new StreamReader(stream, System.Text.Encoding.UTF8))
+                using (var reader = new StreamReader(stream, System.Text.Encoding.UTF8))
                 {
                     return reader.ReadToEnd();
                 }
@@ -170,6 +165,4 @@ public class Theme
     public Color GridViewHeaderBorderColor { get; set; } //Border of grid view header
     public Color ImageViewBackColor { get; set; } //Background of image viewer
     public Color InactiveTreeGridSelectionColor { get; set; } //Background of image viewer
-
-
 }
