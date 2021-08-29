@@ -31,11 +31,15 @@ namespace Kuriimu2.EtoForms.Support
 
         private const string lightThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
         private const string darkThemeLocation_ = "Kuriimu2.EtoForms.Resources.Themes.Dark.json";
-        private const string baseThemeKey_ = "Light";
+        private const string baseThemeKey_ = "Kuriimu2.EtoForms.Resources.Themes.Light.json";
+
+        private const string detailsKey_ = "Details";
+        private const string mainColorKey_ = "MainColor";
+        private const string altColorKey_ = "AltColor";
 
         #endregion
 
-        public readonly Dictionary<string, Theme> themes = new Dictionary<string, Theme>();
+        public readonly Dictionary<string, Dictionary<string, Dictionary<string, Color>>> themes = new Dictionary<string, Dictionary<string, Dictionary<string, Color>>>();
 
         private string _currentThemeKey;
 
@@ -54,22 +58,22 @@ namespace Kuriimu2.EtoForms.Support
             #region Styling
 
             Eto.Style.Add<Label>(null, text =>
-                {
-                    text.TextColor = GetTheme().AltColor;
-                });
+            {
+                text.TextColor = GetTheme(detailsKey_,altColorKey_);
+            });
             Eto.Style.Add<Dialog>(null, dialog =>
             {
-                dialog.BackgroundColor = GetTheme().MainColor;
+                dialog.BackgroundColor = GetTheme(detailsKey_, mainColorKey_);
             });
             Eto.Style.Add<CheckBox>(null, checkbox =>
             {
-                checkbox.BackgroundColor = GetTheme().MainColor;
-                checkbox.TextColor = GetTheme().AltColor;
+                checkbox.BackgroundColor = GetTheme(detailsKey_, mainColorKey_);
+                checkbox.TextColor = GetTheme(detailsKey_, altColorKey_);
             });
             Eto.Style.Add<GroupBox>(null, groupBox =>
             {
-                groupBox.BackgroundColor = GetTheme().MainColor;
-                groupBox.TextColor = GetTheme().AltColor;
+                groupBox.BackgroundColor = GetTheme(detailsKey_, mainColorKey_);
+                groupBox.TextColor = GetTheme(detailsKey_, altColorKey_);
             });
 
             #endregion
@@ -88,49 +92,41 @@ namespace Kuriimu2.EtoForms.Support
                 MessageBox.Show(Application.Instance.Localize(this, ThemeUnsupportedPlatformTextKey_), Application.Instance.Localize(this, ThemeUnsupportedPlatformCaptionKey_));
             }
         }
-        public Theme GetTheme()
+
+        public Color GetTheme(string sectionKey, string colorKey)
         {
-            return themes[_currentThemeKey];
+            if (themes[_currentThemeKey].TryGetValue(sectionKey, out var section))
+            {
+                if (section.TryGetValue(colorKey, out var color))
+                {
+                    return color;
+                }
+                else
+                {
+                    return themes[baseThemeKey_][sectionKey][colorKey];
+                }
+            }
+            else
+            {
+                return themes[baseThemeKey_][sectionKey][colorKey];
+            }
+
         }
         private void LoadJson()
         {
             var themeDirs = Directory.GetFiles(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Themes");
-            var files = new List<string>
-            {
-                LoadEmbeddedFile(lightThemeLocation_),
-                LoadEmbeddedFile(darkThemeLocation_)
-            };
+
+            var lightTheme = CreateTheme(LoadEmbeddedFile(lightThemeLocation_));
+            themes.Add(lightThemeLocation_, lightTheme);
+            var darkTheme = CreateTheme(LoadEmbeddedFile(darkThemeLocation_));
+            themes.Add(darkThemeLocation_, darkTheme);
+
             foreach (var dir in themeDirs)
             {
-                files.Add(File.ReadAllText(dir));
-            }
-            foreach (var file in files)
-            {
-                Theme theme;
-                try
+                var theme = CreateTheme(File.ReadAllText(dir));
+                if (theme != null)
                 {
-                    theme = JsonConvert.DeserializeObject<Theme>(file);
-                }
-                catch (JsonReaderException)
-                {
-                    continue;
-                }
-                catch (JsonSerializationException)
-                {
-                    continue;
-                }
-
-                if (theme != null && theme.Name != null)// theme name cannot be omited
-                {
-                    foreach (var property in theme.GetType().GetProperties())
-                    {
-                        // theme properties can be omited, they will be set to light
-                        if (property.GetValue(theme) == null)
-                        {
-                            property.SetValue(theme, property.GetValue(themes[baseThemeKey_]));
-                        }
-                    }
-                    themes.TryAdd(theme.Name, theme);
+                    themes.Add(dir, theme);
                 }
             }
         }
@@ -144,34 +140,22 @@ namespace Kuriimu2.EtoForms.Support
                 }
             }
         }
+        private Dictionary<string, Dictionary<string, Color>> CreateTheme(string json)
+        {
+            Dictionary<string, Dictionary<string, Color>> theme;
+            try
+            {
+                theme = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Color>>>(json);
+            }
+            catch (JsonReaderException)
+            {
+                return null;
+            }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
+            return theme;
+        }
     }
-}
-public class Theme
-{
-    public string Name { get; set; }
-    public Color MainColor { get; set; }//Main background color
-    public Color AltColor { get; set; }//text and foreground color
-    public Color LoggerBackColor { get; set; }//Background of logger text areas
-    public Color LoggerTextColor { get; set; }//Text of logger text areas
-    public Color LogFatalColor { get; set; }//fatal logger errors color
-    public Color LogInfoColor { get; set; }//Info logger text color
-    public Color LogErrorColor { get; set; }//Error logger text color
-    public Color LogWarningColor { get; set; }//warning logger text color
-    public Color LogDefaultColor { get; set; }//defualt logger text color
-    public Color HexByteBack1Color { get; set; } //every second byte in hex viewer
-    public Color HexSidebarBackColor { get; set; }//side bar color in hex viewer
-    public Color ControlColor { get; set; }
-    public Color MenuBarBackColor { get; set; }//Back colour of top menu bar
-    public Color UnselectedTabBackColor { get; set; }//Background of unselected tab
-    public Color WindowBackColor { get; set; } //Back of the main window, NOT the main panel
-    public Color ArchiveChangedColor { get; set; }//Archive viewer text color when a file is modified
-    public Color ProgressColor { get; set; } //Colour of the moving bar in a progress bar
-    public Color ProgressBorderColor { get; set; } //border color of progress bar
-    public Color ProgressControlColor { get; set; }//Background color of the progress bar
-    public Color ButtonBackColor { get; set; } //Background colour of a button
-    public Color ButtonDisabledTextColor { get; set; } //Text colour of a greyedout/disabledbutton
-    public Color GridViewHeaderGradientColor { get; set; } //Graident END color of gridview header
-    public Color GridViewHeaderBorderColor { get; set; } //Border of grid view header
-    public Color ImageViewBackColor { get; set; } //Background of image viewer
-    public Color InactiveGridSelectionColor { get; set; } //Background of image viewer
 }

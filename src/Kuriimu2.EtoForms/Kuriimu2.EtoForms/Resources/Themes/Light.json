@@ -1,28 +1,47 @@
 ﻿{
-  "Name": "Light",
-  "MainColor": "255,255,255",
-  "AltColor": "0,0,0",
-  "LoggerBackColor": "0,0,0",
-  "LoggerTextColor": "32,194,14",
-  "LogFatalColor": "139,0,0",
-  "LogInfoColor": "32,194,14",
-  "LogErrorColor": "255,0,0",
-  "LogWarningColor": "255,165,0",
-  "LogDefaultColor": "245,222,179",
-  "HexByteBack1Color": "240,253,255",
-  "HexSidebarBackColor": "205,247,253",
-  "ControlColor": "240,253,255",
-  "MenuBarBackColor": "245,245,245",
-  "UnselectedTabBackColor": "238,238,238",
-  "WindowBackColor": "240,240,240",
-  "ArchiveChangedColor": "255,165,0",
-  "ProgressColor": "50,205, 50 ",
-  "ProgressBorderColor": "130,130,130",
-  "ProgressControlColor": "210,210,210",
-  "ButtonBackColor": "221,221,221",
-  "ButtonDisabledTextColor": "0,0,0",
-  "GridViewHeaderGradientColor": "243,243,243",
-  "GridViewHeaderBorderColor": "213,213,213",
-  "ImageViewBackColor": "0,100,0",
-  "InactiveGridSelectionColor": "240,240,240"
+  "Main": {
+    "MainColor": "255,255,255",
+    "AltColor": "0,0,0"
+  },
+  "Logger": {
+    "BackColor": "0,0,0",
+    "TextColor": "32,194,14",
+    "FatalColor": "139,0,0",
+    "InfoColor": "32,194,14",
+    "ErrorColor": "255,0,0",
+    "WarningColor": "255,165,0",
+    "DefaultColor": "245,222,179"
+  },
+  "HexViewer": {
+    "ByteBack1Color": "240,253,255",
+    "SidebarBackColor": "205,247,253",
+    "ControlColor": "240,253,255"
+  },
+  "Menu": {
+    "MenuBarBackColor": "245,245,245",
+    "WindowBackColor": "240,240,240"
+  },
+  "Tab": {
+    "UnselectedTabBackColor": "238,238,238"
+  },
+  "ArchiveViewer": {
+    "ArchiveChangedColor": "255,165,0"
+  },
+  "ProgressBar": {
+    "ProgressColor": "50,205, 50 ",
+    "ProgressBorderColor": "130,130,130",
+    "ProgressControlColor": "210,210,210
+  },
+  "Button": {
+    "ButtonBackColor": "221,221,221",
+    "ButtonDisabledTextColor": "0,0,0"
+  },
+  "Grid": {
+    "GridViewHeaderGradientColor": "243,243,243",
+    "GridViewHeaderBorderColor": "213,213,213",
+    "InactiveGridSelectionColor": "240,240,240"
+  },
+  "ImageView": {
+    "ImageViewBackColor": "0,100,0"
+  }
 }
